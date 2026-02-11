@@ -1,0 +1,6 @@
+include MANIFEST.in
+include README.md
+include LICENSE
+include requirements.txt
+recursive-include erpnext_nextcloud_sso *.py *.json *.js *.css *.html *.md *.csv *.txt *.png *.jpg *.svg
+recursive-include erpnext_nextcloud_sso/public *
