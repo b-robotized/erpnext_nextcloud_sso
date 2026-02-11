@@ -1,0 +1,3 @@
+recursive-include nextcloud_sso *.py
+include README.md
+include LICENSE
