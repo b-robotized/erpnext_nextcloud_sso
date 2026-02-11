@@ -37,18 +37,15 @@ docker run --rm -v $(pwd):/app -w /app python:3.14-slim \
 ```
 
 ### 2. Integration Tests (Installation Verification)
-These tests verify that the app can be successfully installed into a real ERPNext site. They run using Docker Compose.
-
-**Prerequisite:**
-You must push your code to GitHub first. The `Build Container Image` workflow will run and publish the Docker image `ghcr.io/b-robotized/erpnext_nextcloud_sso:stable`.
+These tests verify that the app can be successfully installed into a real ERPNext site using Docker Compose.
 
 **Run locally:**
 ```bash
 cd docker
-docker compose up -d
+docker compose up -d --build
 docker compose logs -f configurator
 ```
 
+*   The `--build` flag ensures your local code is used to build the image immediately.
 *   The `configurator` service attempts to create a new site and run `install-app erpnext_nextcloud_sso`.
 *   If you see "Setup completed" in the logs, the app is successfully installable.
-*   If it fails, the logs will show why the installation was rejected.
