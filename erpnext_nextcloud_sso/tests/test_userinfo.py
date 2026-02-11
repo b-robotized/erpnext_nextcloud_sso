@@ -5,6 +5,9 @@ from unittest.mock import MagicMock, patch
 sys.modules["frappe"] = MagicMock()
 import frappe
 
+# Configure frappe.whitelist to pass through the decorated function
+frappe.whitelist.return_value = lambda f: f
+
 from erpnext_nextcloud_sso import userinfo
 
 def test_get_bearer_authorization_valid():
