@@ -24,3 +24,31 @@ Create a Social Login Key named **Nextcloud** (or any name you prefer; use the s
 
 In Nextcloud, create an OAuth2 client and set Redirect URI to:
   https://<erp>/api/method/frappe.integrations.oauth2_logins.custom/Nextcloud
+
+## Testing
+
+### 1. Unit Tests (Logic Verification)
+These tests check the Python code logic (e.g. `userinfo.py`) in isolation. They are fast and run locally or in CI without a full Frappe environment.
+
+**Run locally:**
+```bash
+docker run --rm -v $(pwd):/app -w /app python:3.14-slim \
+    bash -c "pip install -e . pytest && pytest erpnext_nextcloud_sso/tests"
+```
+
+### 2. Integration Tests (Installation Verification)
+These tests verify that the app can be successfully installed into a real ERPNext site. They run using Docker Compose.
+
+**Prerequisite:**
+You must push your code to GitHub first. The `Build Container Image` workflow will run and publish the Docker image `ghcr.io/b-robotized/erpnext_nextcloud_sso:stable`.
+
+**Run locally:**
+```bash
+cd docker
+docker compose up -d
+docker compose logs -f configurator
+```
+
+*   The `configurator` service attempts to create a new site and run `install-app erpnext_nextcloud_sso`.
+*   If you see "Setup completed" in the logs, the app is successfully installable.
+*   If it fails, the logs will show why the installation was rejected.
