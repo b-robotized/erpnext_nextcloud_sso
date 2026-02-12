@@ -39,13 +39,25 @@ docker run --rm -v $(pwd):/app -w /app python:3.14-slim \
 ### 2. Integration Tests (Installation Verification)
 These tests verify that the app can be successfully installed into a real ERPNext site using Docker Compose.
 
-**Run locally:**
+**Automated Management Script:**
+I have provided a helper script to manage the lifecycle of your test environment.
+
+1.  **Start Clean & Run**:
+    This will clean up previous runs, build the image, start the containers, and show the installation logs.
+    ```bash
+    ./manage.sh
+    ```
+
+2.  **Clean Up Only**:
+    This will stop containers and remove all volumes and images created by this test, freeing up space.
+    ```bash
+    ./manage.sh --clean-only
+    ```
+
+**Manual Commands:**
+If you prefer running commands manually:
 ```bash
 cd docker
 docker compose up -d --build
 docker compose logs -f configurator
 ```
-
-*   The `--build` flag ensures your local code is used to build the image immediately.
-*   The `configurator` service attempts to create a new site and run `install-app erpnext_nextcloud_sso`.
-*   If you see "Setup completed" in the logs, the app is successfully installable.
