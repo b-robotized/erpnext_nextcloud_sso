@@ -28,6 +28,7 @@ services:
 
   configurator:
     <<: *customizable_image
+    restart: "no"
     command:
       - |
         ls -1 apps > sites/apps.txt; bench set-config -g db_host $$DB_HOST; bench set-config -gp db_port $$DB_PORT; bench set-config -g redis_cache "redis://$$REDIS_CACHE"; bench set-config -g redis_queue "redis://$$REDIS_QUEUE"; bench set-config -g redis_socketio "redis://$$REDIS_QUEUE"; bench set-config -gp socketio_port $$SOCKETIO_PORT;
@@ -39,15 +40,19 @@ services:
         done
         echo "✓ Database is reachable."
       
-        bench new-site ${SITE_NAME} \
-          --db-host            ${DB_HOST} \
-          --db-port            ${DB_PORT} \
-          --db-name            ${DB_NAME} \
-          --db-password        ${DB_PASSWORD} \
-          --db-root-password   ${DB_ROOT_PASSWORD} \
-          --admin-password     ${ADMIN_PASSWORD} \
-          --install-app        erpnext \
-          --install-app        erpnext_nextcloud_sso
+        if [ ! -d "sites/${SITE_NAME}" ]; then
+          bench new-site ${SITE_NAME} \
+            --db-host            ${DB_HOST} \
+            --db-port            ${DB_PORT} \
+            --db-name            ${DB_NAME} \
+            --db-password        ${DB_PASSWORD} \
+            --db-root-password   ${DB_ROOT_PASSWORD} \
+            --admin-password     ${ADMIN_PASSWORD} \
+            --install-app        erpnext \
+            --install-app        erpnext_nextcloud_sso
+        else
+          echo "Site ${SITE_NAME} already exists. Skipping creation."
+        fi
 
         echo "➤ Site created – extend DB access rights"
 
