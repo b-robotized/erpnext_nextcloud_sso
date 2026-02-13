@@ -8,7 +8,7 @@ import frappe
 # Configure frappe.whitelist to pass through the decorated function
 frappe.whitelist.return_value = lambda f: f
 
-from erpnext_nextcloud_sso import userinfo
+from erpnext_nextcloud_sso.erpnext_nextcloud_sso import userinfo
 
 def test_get_bearer_authorization_valid():
     frappe.get_request_header.return_value = "Bearer valid_token"
@@ -26,7 +26,7 @@ def test_get_bearer_authorization_invalid():
     except Exception as e:
         assert str(e) == "Throw called"
 
-@patch("erpnext_nextcloud_sso.userinfo.requests.get")
+@patch("erpnext_nextcloud_sso.erpnext_nextcloud_sso.userinfo.requests.get")
 def test_userinfo_get_success(mock_get):
     # Setup mocks
     frappe.get_request_header.return_value = "Bearer token"

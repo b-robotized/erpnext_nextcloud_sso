@@ -18,7 +18,7 @@ Create a Social Login Key named **Nextcloud** (or any name you prefer; use the s
 - Authorize URL: https://<nc>/apps/oauth2/authorize
 - Access Token URL: https://<nc>/apps/oauth2/api/v1/token
 - Base URL: https://<nc>     (set this in the UI; no site_config needed)
-- API Endpoint: https://<erp>/api/method/nextcloud_sso.userinfo.get?provider=Nextcloud
+- API Endpoint: https://<erp>/api/method/erpnext_nextcloud_sso.userinfo.get?provider=Nextcloud
 - User ID Property: email
 - Auth URL Data: {"response_type":"code","scope":""}
 
@@ -33,7 +33,7 @@ These tests check the Python code logic (e.g. `userinfo.py`) in isolation. They 
 **Run locally:**
 ```bash
 docker run --rm -v $(pwd):/app -w /app python:3.14-slim \
-    bash -c "pip install -e . pytest && pytest erpnext_nextcloud_sso/tests"
+    bash -c "pip install -e . pytest && pytest erpnext_nextcloud_sso/erpnext_nextcloud_sso/tests"
 ```
 
 ### 2. Integration Tests (Installation Verification)
