@@ -13,24 +13,26 @@ Small Frappe app that adds a "userinfo shim" endpoint so ERPNext v16 can use Nex
 
 ## Configure ERPNext Social Login Key
 
-**IMPORTANT:** Use **lowercase** for the Social Login Key **Name** (ID field). The **Label** (display name) can be Title Case.
+**Good News:** This app adds "Nextcloud" as a built-in Social Login Provider option!
 
-Create a Social Login Key:
-- **Name (ID)**: `nextcloud` (lowercase - this is used in URLs and must match Nextcloud OAuth configuration)
-- **Label** (optional): `Nextcloud` (Title Case - this is what appears on the login button)
+After installing the app:
 
-Configuration fields:
-- Authorize URL: `https://<nc>/apps/oauth2/authorize`
-- Access Token URL: `https://<nc>/apps/oauth2/api/v1/token`
-- Base URL: `https://<nc>` (set this in the UI; no site_config needed)
-- API Endpoint: `https://<erp>/api/method/erpnext_nextcloud_sso.erpnext_nextcloud_sso.userinfo.get?provider=nextcloud`
-- User ID Property: `email`
-- Auth URL Data: `{"response_type":"code","scope":""}`
+1.  **Create a new Social Login Key** (Integrations → Authentication → Social Login Key → New)
 
-In Nextcloud, create an OAuth2 client and set Redirect URI to:
-`https://<erp>/api/method/frappe.integrations.oauth2_logins.custom/nextcloud`
+2.  **Select Provider**: Choose **"Nextcloud"** from the "Social Login Provider" dropdown
+    - All OAuth endpoints, API endpoint, and icon are automatically filled in!
 
-**Note**: All URLs use lowercase `nextcloud` to match the Social Login Key Name field.
+3.  **Fill in your instance-specific details**:
+    - **Name**: `nextcloud` (lowercase - used in URLs)
+    - **Base URL**: `https://<your-nextcloud>` (e.g., `https://cloud.example.com`)
+    - **Client ID**: (from Nextcloud OAuth2 client)
+    - **Client Secret**: (from Nextcloud OAuth2 client)
+    - **Enable Social Login**: Check this box to activate the login button
+
+2.  **In Nextcloud**: Create an OAuth2 client (Admin → Security → OAuth 2.0) and set:
+    - **Redirect URI**: `https://<your-erp>/api/method/frappe.integrations.oauth2_logins.custom/nextcloud`
+
+**Note**: All URLs use lowercase `nextcloud` to match the Social Login Key Name field. The button label will show "Nextcloud" (Title Case).
 
 
 ## Testing
