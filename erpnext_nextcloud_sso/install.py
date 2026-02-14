@@ -8,21 +8,19 @@ from .property_setters import get_property_setters
 
 
 def after_install():
-	"""
+    """
 	Called after the app is installed on a site.
 
 	This adds "Nextcloud" to the Social Login Provider dropdown.
 	"""
-	make_property_setters()
+    apply_property_setters()
 
 
-def make_property_setters():
-	"""
-	Apply property setters to extend DocType fields.
-	"""
-	for doctypes, property_setters in get_property_setters().items():
-		if isinstance(doctypes, str):
-			doctypes = (doctypes,)
+def apply_property_setters():
+    """Apply property setters to extend DocType fields."""
+    for doctypes, property_setters in get_property_setters().items():
+        if isinstance(doctypes, str):
+            doctypes = (doctypes,)
 
         for doctype in doctypes:
             for property_setter in property_setters:

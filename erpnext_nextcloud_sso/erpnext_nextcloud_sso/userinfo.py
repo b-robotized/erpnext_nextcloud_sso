@@ -27,7 +27,9 @@ def _get_nextcloud_base_url(provider: str) -> str:
 
     # Some setups leave Base URL empty; fail fast with a helpful message.
     if not nc_base:
-        frappe.throw(f'Social Login Key "{provider}": Base URL is empty. Set it to your Nextcloud URL (e.g. https://cloud.example.com).')
+        frappe.throw(
+            f'Social Login Key "{provider}": Base URL is empty. Set it to your Nextcloud URL (e.g. https://cloud.example.com).'
+        )
 
     return nc_base
 
@@ -52,7 +54,7 @@ def get(provider: str = "nextcloud"):
       { "email": "...", "name": "..." }
     """
     provider = (provider or "nextcloud").strip()
-    
+
     # Try to find the Social Login Key document with case-insensitive matching
     # This allows the provider to be named "Nextcloud", "nextcloud", etc.
     doc = None
@@ -60,7 +62,7 @@ def get(provider: str = "nextcloud"):
         if frappe.db.exists("Social Login Key", p_name):
             doc = frappe.get_doc("Social Login Key", p_name)
             break
-            
+
     if not doc:
         # Fallback to helper function which throws proper error
         nc_base = _get_nextcloud_base_url(provider)
@@ -68,8 +70,10 @@ def get(provider: str = "nextcloud"):
         # Use the found document's Base URL
         nc_base = (getattr(doc, "base_url", None) or "").strip().rstrip("/")
         if not nc_base:
-            frappe.throw(f'Social Login Key "{doc.name}": Base URL is empty. Set it to your Nextcloud URL.')
-    
+            frappe.throw(
+                f'Social Login Key "{doc.name}": Base URL is empty. Set it to your Nextcloud URL.'
+            )
+
     auth = _get_bearer_authorization()
 
     # Nextcloud OCS "current user" endpoint (nested JSON)
@@ -97,7 +101,9 @@ def get(provider: str = "nextcloud"):
     name = (data.get("display-name") or data.get("displayname") or "").strip()
 
     if not email:
-        frappe.throw("Nextcloud returned empty email. Ensure the user has an email set in Nextcloud (Profile settings).")
+        frappe.throw(
+            "Nextcloud returned empty email. Ensure the user has an email set in Nextcloud (Profile settings)."
+        )
 
     if not name:
         name = email
