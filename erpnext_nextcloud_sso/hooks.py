@@ -1,9 +1,9 @@
-app_name = 'erpnext_nextcloud_sso'
-app_title = 'Nextcloud SSO'
-app_publisher = 'b»robotized group'
-app_description = 'Userinfo shim to use Nextcloud OAuth2 with ERPNext v16 social login.'
-app_email = 'erp-devs@b-robotized.com'
-app_license = 'MIT'
+app_name = "erpnext_nextcloud_sso"
+app_title = "Nextcloud SSO"
+app_publisher = "b»robotized group"
+app_description = "Userinfo shim to use Nextcloud OAuth2 with ERPNext v16 social login."
+app_email = "erp-devs@b-robotized.com"
+app_license = "MIT"
 
 # Includes in <head>
 # ------------------
@@ -21,5 +21,5 @@ after_install = "erpnext_nextcloud_sso.install.after_install"
 # ----------------
 
 override_whitelisted_methods = {
-	"frappe.integrations.doctype.social_login_key.social_login_key.get_social_login_provider": "erpnext_nextcloud_sso.overrides.get_social_login_provider"
+    "frappe.integrations.doctype.social_login_key.social_login_key.get_social_login_provider": "erpnext_nextcloud_sso.overrides.get_social_login_provider"
 }
