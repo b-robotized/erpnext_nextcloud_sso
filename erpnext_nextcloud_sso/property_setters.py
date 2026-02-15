@@ -1,5 +1,6 @@
 import frappe
 
+
 def get_property_setters():
     """
     Return property setters to be applied during installation.

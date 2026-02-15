@@ -9,10 +9,10 @@ from .property_setters import get_property_setters
 
 def after_install():
     """
-	Called after the app is installed on a site.
+    Call after the app is installed on a site.
 
-	This adds "Nextcloud" to the Social Login Provider dropdown.
-	"""
+    This adds "Nextcloud" to the Social Login Provider dropdown.
+    """
     apply_property_setters()
 
 
