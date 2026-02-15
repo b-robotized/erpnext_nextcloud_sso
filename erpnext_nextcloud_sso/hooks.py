@@ -20,6 +20,7 @@ after_install = "erpnext_nextcloud_sso.install.after_install"
 # Override Methods
 # ----------------
 
-override_whitelisted_methods = {
-    "frappe.integrations.doctype.social_login_key.social_login_key.get_social_login_provider": "erpnext_nextcloud_sso.overrides.get_social_login_provider"
+# Override DocType class methods
+override_doctype_class = {
+    "Social Login Key": "erpnext_nextcloud_sso.overrides.CustomSocialLoginKey"
 }
