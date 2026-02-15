@@ -2,6 +2,7 @@
 
 import json
 
+import frappe
 from frappe.integrations.doctype.social_login_key.social_login_key import SocialLoginKey
 
 
@@ -20,6 +21,9 @@ class CustomSocialLoginKey(SocialLoginKey):
         Otherwise, delegate to parent class.
         """
         if provider == "Nextcloud":
+            # Get the current site URL for absolute API endpoint
+            site_url = frappe.utils.get_url()
+
             return {
                 "provider_name": "Nextcloud",
                 "custom_base_url": 1,
@@ -27,9 +31,10 @@ class CustomSocialLoginKey(SocialLoginKey):
                 "redirect_url": (
                     "/api/method/erpnext_nextcloud_sso.oauth2_logins.login_via_nextcloud"
                 ),
+                # API endpoint must be absolute URL pointing to ERPNext, not Nextcloud
                 "api_endpoint": (
-                    "/api/method/erpnext_nextcloud_sso.erpnext_nextcloud_sso.userinfo.get"
-                    "?provider=nextcloud"
+                    f"{site_url}/api/method/erpnext_nextcloud_sso.erpnext_nextcloud_sso"
+                    ".userinfo.get?provider=nextcloud"
                 ),
                 "authorize_url": "/apps/oauth2/authorize",
                 "access_token_url": "/apps/oauth2/api/v1/token",
