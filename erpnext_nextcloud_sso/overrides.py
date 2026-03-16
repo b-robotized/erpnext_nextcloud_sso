@@ -12,6 +12,7 @@ class CustomSocialLoginKey(SocialLoginKey):
 
     This class overrides the get_social_login_provider method.
     """
+
     @frappe.whitelist()
     def get_social_login_provider(self, provider, initialize=False):
         """
