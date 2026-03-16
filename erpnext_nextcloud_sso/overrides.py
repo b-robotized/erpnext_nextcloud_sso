@@ -21,9 +21,6 @@ class CustomSocialLoginKey(SocialLoginKey):
         Otherwise, delegate to parent class.
         """
         if provider == "Nextcloud":
-            # Get the current site URL for absolute API endpoint
-            site_url = frappe.utils.get_url()
-
             return {
                 "provider_name": "Nextcloud",
                 "custom_base_url": 1,
@@ -32,7 +29,7 @@ class CustomSocialLoginKey(SocialLoginKey):
                     "/api/method/erpnext_nextcloud_sso.oauth2_logins.login_via_nextcloud"
                 ),
                 # API endpoint pointing to Nextcloud
-                "api_endpoint":"/ocs/v2.php/cloud/user?format=json",
+                "api_endpoint": "/ocs/v2.php/cloud/user?format=json",
                 "authorize_url": "/apps/oauth2/authorize",
                 "access_token_url": "/apps/oauth2/api/v1/token",
                 "auth_url_data": json.dumps({"response_type": "code", "scope": ""}),

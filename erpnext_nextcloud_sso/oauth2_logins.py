@@ -8,6 +8,7 @@ import json
 import jwt
 from collections.abc import Callable
 
+
 @frappe.whitelist(allow_guest=True)
 def login_via_nextcloud(code: str, state: str):
     """
@@ -21,11 +22,14 @@ def login_via_nextcloud(code: str, state: str):
 
 
 def login_via_oauth2(provider: str, code: str, state: str, decoder: Callable | None = None):
-	info = get_info_via_oauth(provider, code, decoder)
-	login_oauth_user(info, provider=provider, state=state)
+    info = get_info_via_oauth(provider, code, decoder)
+    login_oauth_user(info, provider=provider, state=state)
 
-def get_info_via_oauth(provider: str, code: str, decoder: Callable | None = None, id_token: bool = False):
-    flow = frappe.utils.oauth.get_oauth2_flow(provider) 
+
+def get_info_via_oauth(
+    provider: str, code: str, decoder: Callable | None = None, id_token: bool = False
+):
+    flow = frappe.utils.oauth.get_oauth2_flow(provider)
     oauth2_providers = frappe.utils.oauth.get_oauth2_providers()
 
     args = {
@@ -59,7 +63,9 @@ def get_info_via_oauth(provider: str, code: str, decoder: Callable | None = None
             info["name"] = name or email
             info["sub"] = email
 
-    if not (info.get("email_verified") or frappe.utils.oauth.get_email(info)):  # Use original helper
+    if not (
+        info.get("email_verified") or frappe.utils.oauth.get_email(info)
+    ):  # Use original helper
         frappe.throw(_("Email not verified with {0}").format(provider.title()))
 
     return info

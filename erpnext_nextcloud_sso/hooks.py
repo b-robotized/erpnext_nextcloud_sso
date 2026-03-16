@@ -19,6 +19,4 @@ override_doctype_class = {
 }
 
 
-doctype_js = {
-	"Social Login Key": "public/js/social_login_key.js"
-}
+doctype_js = {"Social Login Key": "public/js/social_login_key.js"}
