@@ -12,7 +12,7 @@ class CustomSocialLoginKey(SocialLoginKey):
 
     This class overrides the get_social_login_provider method.
     """
-
+    @frappe.whitelist()
     def get_social_login_provider(self, provider, initialize=False):
         """
         Override to add Nextcloud provider configuration.
@@ -31,11 +31,8 @@ class CustomSocialLoginKey(SocialLoginKey):
                 "redirect_url": (
                     "/api/method/erpnext_nextcloud_sso.oauth2_logins.login_via_nextcloud"
                 ),
-                # API endpoint must be absolute URL pointing to ERPNext, not Nextcloud
-                "api_endpoint": (
-                    f"{site_url}/api/method/erpnext_nextcloud_sso.erpnext_nextcloud_sso"
-                    ".userinfo.get?provider=nextcloud"
-                ),
+                # API endpoint pointing to Nextcloud
+                "api_endpoint":"/ocs/v2.php/cloud/user?format=json",
                 "authorize_url": "/apps/oauth2/authorize",
                 "access_token_url": "/apps/oauth2/api/v1/token",
                 "auth_url_data": json.dumps({"response_type": "code", "scope": ""}),

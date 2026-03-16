@@ -12,15 +12,13 @@ app_license = "MIT"
 app_include_css = "/assets/erpnext_nextcloud_sso/css/erpnext_nextcloud_sso.css"
 app_include_js = "/assets/erpnext_nextcloud_sso/js/erpnext_nextcloud_sso.js"
 
-# Installation
-# ------------
-
-after_install = "erpnext_nextcloud_sso.install.after_install"
-
-# Override Methods
-# ----------------
 
 # Override DocType class methods
 override_doctype_class = {
     "Social Login Key": "erpnext_nextcloud_sso.overrides.CustomSocialLoginKey"
+}
+
+
+doctype_js = {
+	"Social Login Key": "public/js/social_login_key.js"
 }
