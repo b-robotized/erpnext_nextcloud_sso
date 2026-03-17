@@ -21,6 +21,4 @@ override_doctype_class = {
 
 doctype_js = {"Social Login Key": "public/js/social_login_key.js"}
 
-after_migrate = [
-    "erpnext_nextcloud_sso.setup.add_nextcloud_provider"
-]
+after_migrate = ["erpnext_nextcloud_sso.setup.add_nextcloud_provider"]

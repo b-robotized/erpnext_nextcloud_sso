@@ -1,5 +1,6 @@
 import frappe
 
+
 def add_nextcloud_provider():
     df = frappe.get_meta("Social Login Key").get_field("social_login_provider")
 
@@ -13,12 +14,9 @@ def add_nextcloud_provider():
 
         frappe.db.set_value(
             "DocField",
-            {
-                "parent": "Social Login Key",
-                "fieldname": "social_login_provider"
-            },
+            {"parent": "Social Login Key", "fieldname": "social_login_provider"},
             "options",
-            "\n".join(options)
+            "\n".join(options),
         )
 
         frappe.clear_cache()

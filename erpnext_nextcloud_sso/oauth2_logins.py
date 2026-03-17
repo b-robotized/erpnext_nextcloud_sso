@@ -9,13 +9,17 @@ import jwt
 from collections.abc import Callable
 
 
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist(  # nosem: frappe-semgrep-rules.rules.security.guest-whitelisted-method
+    allow_guest=True
+)
 def login_via_nextcloud(code: str, state: str):
     """
     Handle OAuth2 callback from Nextcloud.
 
     This is called when Nextcloud redirects back to ERPNext after user authorization.
     The redirect URL is: /api/method/erpnext_nextcloud_sso.oauth2_logins.login_via_nextcloud
+
+    Note: allow_guest=True is required for OAuth callback - users are not yet authenticated.
     """
     login_via_oauth2("nextcloud", code, state, decoder=decoder_compat)
 

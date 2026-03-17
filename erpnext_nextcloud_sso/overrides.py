@@ -14,7 +14,7 @@ class CustomSocialLoginKey(SocialLoginKey):
     """
 
     @frappe.whitelist()
-    def get_social_login_provider(self, provider, initialize=False):
+    def get_social_login_provider(self, provider: str, initialize: bool = False):
         """
         Override to add Nextcloud provider configuration.
 
