@@ -1,6 +1,7 @@
 frappe.ui.form.on("Social Login Key", {
   social_login_provider(frm) {
     const fields = [
+      "provider_name",
       "base_url",
       "authorize_url",
       "access_token_url",
