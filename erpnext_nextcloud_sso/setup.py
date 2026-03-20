@@ -21,6 +21,7 @@ def add_nextcloud_provider():
 
         frappe.clear_cache()
 
+
 def remove_nextcloud_provider():
     df = frappe.get_meta("Social Login Key").get_field("social_login_provider")
 
