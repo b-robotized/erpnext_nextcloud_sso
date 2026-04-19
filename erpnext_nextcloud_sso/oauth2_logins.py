@@ -10,14 +10,13 @@ from collections.abc import Callable
 
 
 @frappe.whitelist(allow_guest=True)
-def login_via_nextcloud(code: str, state: str,provider: str = "nextcloud"):
+def login_via_nextcloud(code: str, state: str, provider: str = "nextcloud"):
     """
     Handle OAuth2 callback from Nextcloud.
 
     This is called when Nextcloud redirects back to ERPNext after user authorization.
     The redirect URL is: /api/method/erpnext_nextcloud_sso.oauth2_logins.login_via_nextcloud
     """
-
     login_via_oauth2(provider, code, state, decoder=decoder_compat)
 
 
