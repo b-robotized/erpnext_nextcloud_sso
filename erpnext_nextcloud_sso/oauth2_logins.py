@@ -9,6 +9,7 @@ import jwt
 from collections.abc import Callable
 
 
+# nosemgrep: frappe-semgrep-rules.rules.security.guest-whitelisted-method
 @frappe.whitelist(allow_guest=True)
 def login_via_nextcloud(code: str, state: str, provider: str = "nextcloud"):
     """
