@@ -7,21 +7,21 @@ from frappe import _
 import json
 import jwt
 from collections.abc import Callable
+import base64
 
+import json
+import base64
 
-@frappe.whitelist(  # nosem: frappe-semgrep-rules.rules.security.guest-whitelisted-method
-    allow_guest=True
-)
-def login_via_nextcloud(code: str, state: str):
+# nosemgrep: frappe-semgrep-rules.rules.security.guest-whitelisted-method
+@frappe.whitelist(allow_guest=True)
+def login_via_nextcloud(code: str, state: str, provider: str = "nextcloud"):
     """
     Handle OAuth2 callback from Nextcloud.
 
     This is called when Nextcloud redirects back to ERPNext after user authorization.
     The redirect URL is: /api/method/erpnext_nextcloud_sso.oauth2_logins.login_via_nextcloud
-
-    Note: allow_guest=True is required for OAuth callback - users are not yet authenticated.
     """
-    login_via_oauth2("nextcloud", code, state, decoder=decoder_compat)
+    login_via_oauth2(provider, code, state, decoder=decoder_compat)
 
 
 def login_via_oauth2(provider: str, code: str, state: str, decoder: Callable | None = None):
@@ -57,8 +57,8 @@ def get_info_via_oauth(
         api_endpoint_args = oauth2_providers[provider].get("api_endpoint_args")
 
         info = session.get(api_endpoint, params=api_endpoint_args).json()
-
-        if provider == "nextcloud":
+        social_login_provider = frappe.get_doc("Social Login Key", provider).social_login_provider
+        if social_login_provider == "Nextcloud":
             info = info.get("ocs", {}).get("data", {})
             email = (info.get("email") or "").strip().lower()
             name = (info.get("display-name") or info.get("displayname") or "").strip()
@@ -72,3 +72,21 @@ def get_info_via_oauth(
         frappe.throw(_("Email not verified with {0}").format(provider.title()))
 
     return info
+
+def get_oauth2_authorize_url(provider: str, redirect_to: str) -> str:
+	flow = get_oauth2_flow(provider)
+
+	state = {
+		"site": frappe.utils.get_url(),
+		"token": frappe.generate_hash(),
+		"redirect_to": redirect_to,
+		"provider": provider
+	}
+
+	# relative to absolute url
+	data = {
+		"redirect_uri": get_redirect_uri(provider),
+		"state": base64.b64encode(bytes(json.dumps(state).encode("utf-8"))),
+	}
+
+	oauth2_providers = get_oauth2_providers()
