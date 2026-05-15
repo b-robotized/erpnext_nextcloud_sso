@@ -78,3 +78,26 @@ cd docker
 docker compose up -d --build
 docker compose logs -f configurator
 ```
+
+### Configure OAuth2 Client in Nextcloud
+
+Before setting up the Social Login Key in ERPNext, create an OAuth2 client in Nextcloud.
+
+1. Log in to your Nextcloud instance as an administrator.
+2. Go to Administration Settings → Security → OAuth 2.0 clients.
+3. Click "Add client".
+4. Enter a name such as "ERPNext".
+5. In the Redirection URI field, enter:
+   ```
+   https://<your-erp>/api/method/erpnext_nextcloud_sso.oauth2_logins.login_via_nextcloud?provider={docname of social login key}
+   ```
+   
+   Example:
+   ```
+   https://erp.example.com/api/method/erpnext_nextcloud_sso.oauth2_logins.login_via_nextcloud?provider={docname of social login key}
+   ```
+6. Click "Add" or "Save".
+7. Copy the generated Client Identifier and Secret.
+8. Use these values as the Client ID and Client Secret in the ERPNext Social Login Key.
+
+**Important**: If your ERPNext URL changes (domain, protocol, or port), you must update the Redirection URI in Nextcloud so it matches exactly.
